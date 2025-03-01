@@ -20,7 +20,7 @@ async function send(headers: any, message: string) {
 }
 
 send({
-  "x-match":"any",
+  "x-match":"all",
   "youtube-type":"video",
   "old-or-new":"new"
 },"Uploaded A New Video")

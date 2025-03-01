@@ -1,5 +1,5 @@
 import amqp, { Message } from 'amqplib';
-async function send(headers: any, message: any) {
+async function receive() {
     try {
         const connection = await amqp.connect("amqp://localhost")
         const channel = await connection.createChannel();
@@ -16,14 +16,14 @@ async function send(headers: any, message: any) {
         })
 
         await channel.bindQueue(queue.queue, exchangeName, "", {
-                "x-match": "any",
+                "x-match": "all",
                 "youtube-type": "video",
                 "old-or-new": "new"
         })
 
         channel.consume(queue.queue,(message)=>{
             if(message) {
-                console.log(message.content)
+                console.log(message.content.toString())
                 channel.ack(message)
             }
             else
@@ -36,3 +36,5 @@ async function send(headers: any, message: any) {
         console.log(error)
     }
 }
+
+receive()
