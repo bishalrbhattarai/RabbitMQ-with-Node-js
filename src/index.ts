@@ -1,6 +1,5 @@
 import amqp, { Channel, Connection, Replies } from "amqplib"
-import os from "os"
-
+// Topic Exchange 
 async function sendMail(rountingKey:string,message:any){
     try {
         const connection :Connection = await amqp.connect("amqp://localhost")

@@ -1,6 +1,8 @@
 import ampq, { Channel, Connection } from "amqplib"
 import os from "os"
 
+
+// Topic Exchange
 async function receiveMail(){
     let channel:any;
     try {
@@ -12,6 +14,7 @@ async function receiveMail(){
 
         await channel.assertExchange(exchange,"topic",{durable:false})
 
+        
         await channel.assertQueue("order_queue",{durable:false})
         await channel.bindQueue("order_queue",exchange,"order.*")
 
@@ -22,12 +25,15 @@ async function receiveMail(){
         channel.consume("order_queue",(message:any)=>{
             console.log(`The Order Data is Received:`)
             console.log(JSON.parse(message.content))
+            channel.ack(message)
         })
 
         
         channel.consume("payment_queue",(message:any)=>{
             console.log(`The Payment Data is Received:`)
             console.log(JSON.parse(message.content))
+            channel.ack(message)
+
         })
 
 
